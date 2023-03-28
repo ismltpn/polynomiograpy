@@ -90,7 +90,7 @@ class Demo(pyglet.window.Window):
 
     def recompute_image_data(self):
         width, height = self.width, self.height
-        data = compute_screen_for_poly_newton(
+        data = compute_screen_for_multi_poly_newton(
             self.polynomials,
             width // self.one_over_res,
             height // self.one_over_res,
@@ -142,7 +142,7 @@ def save3d(data, filename):
             outfile.write("# New slice\n")
 
 
-MAX_ITER_COUNT = 40
+MAX_ITER_COUNT = 64
 
 
 def newton_method_iter_count(poly, x, delta, step=0):
@@ -160,7 +160,91 @@ def newton_method_iter_count(poly, x, delta, step=0):
         return new_res, count + 1
 
 
-def compute_screen_for_poly_newton(
+def compute_screen_for_single_poly_newton(
+    poly,
+    width,
+    height,
+    scale_x,
+    scale_y,
+    screen,
+    screen_buffer,
+    delta,
+    shift_x=0,
+    shift_y=0,
+    reverse_color=False,
+):
+    origin_x = width / 2
+    origin_y = height / 2
+    for j in range(height):
+        for i in range(width):
+            x = (i - origin_x) * scale_x + shift_x
+            y = -(j - origin_y) * scale_y + shift_y
+            val = complex(x, y)
+            res, iter_count = newton_method_iter_count(poly, val, delta)
+            screen_buffer[j, i, 0] = (
+                MAX_ITER_COUNT - iter_count if reverse_color else iter_count
+            )
+    screen[:, :, 0] = screen_buffer[:, :, 0] / MAX_ITER_COUNT * 255
+    screen[:, :, 1] = screen_buffer[:, :, 1] / MAX_ITER_COUNT * 255
+    screen[:, :, 2] = screen_buffer[:, :, 2] / MAX_ITER_COUNT * 255
+    return np.flipud(screen)
+
+
+available_colors = [
+    np.array([1, 0, 0]),
+    np.array([0, 1, 0]),
+    np.array([0, 0, 1]),
+    np.array([1, 1, 0]),
+    np.array([1, 0, 1]),
+    np.array([0, 1, 1]),
+]
+
+
+def compute_screen_for_single_poly_newton_multi_color(
+    poly,
+    width,
+    height,
+    scale_x,
+    scale_y,
+    screen,
+    screen_buffer,
+    delta,
+    shift_x=0,
+    shift_y=0,
+    reverse_color=False,
+):
+    res_colors = {}
+    origin_x = width / 2
+    origin_y = height / 2
+    for j in range(height):
+        for i in range(width):
+            x = (i - origin_x) * scale_x + shift_x
+            y = -(j - origin_y) * scale_y + shift_y
+            val = complex(x, y)
+            res, iter_count = newton_method_iter_count(poly, val, delta)
+            found_color = None
+            if res is None:  # Couldn't converge to root
+                print("Couldn't converge")
+                found_color = np.array([0, 0, 0])
+            else:
+                for previous_res in res_colors.keys():
+                    if abs(res - previous_res) < delta * 10:
+                        found_color = res_colors[previous_res]
+                        break
+                if found_color is None:
+                    print(f"Color not found for {res}")
+                    found_color = available_colors[len(res_colors) - 1]
+                    res_colors[res] = found_color
+            screen_buffer[j, i, :] = found_color * (
+                MAX_ITER_COUNT - iter_count if reverse_color else iter_count
+            )
+    screen[:, :, 0] = screen_buffer[:, :, 0] / MAX_ITER_COUNT * 255
+    screen[:, :, 1] = screen_buffer[:, :, 1] / MAX_ITER_COUNT * 255
+    screen[:, :, 2] = screen_buffer[:, :, 2] / MAX_ITER_COUNT * 255
+    return np.flipud(screen)
+
+
+def compute_screen_for_multi_poly_newton(
     polynomials,
     width,
     height,
@@ -171,6 +255,7 @@ def compute_screen_for_poly_newton(
     delta,
     shift_x=0,
     shift_y=0,
+    reverse_color=True,
 ):
     origin_x = width / 2
     origin_y = height / 2
@@ -185,21 +270,15 @@ def compute_screen_for_poly_newton(
             res, iter_count_1 = newton_method_iter_count(poly1, val, delta)
             res, iter_count_2 = newton_method_iter_count(poly2, val, delta)
             res, iter_count_3 = newton_method_iter_count(poly3, val, delta)
-            screen_buffer[j, i, 0] = iter_count_1
-            screen_buffer[j, i, 1] = iter_count_2
-            screen_buffer[j, i, 2] = iter_count_3
-            # eval_res_abs = abs(eval_res)
-            # eval_deriv_res_abs = abs(eval_deriv_res)
-            # pixel_val_1 = sigmoid(eval_res_abs, delta) * 255
-            # pixel_val_2 = sigmoid(eval_deriv_res_abs, delta) * 255
-            # screen_buffer[j, i, 0] = pixel_val_1
-            # screen_buffer[j, i, 1] = pixel_val_2
-    # max0 = np.max(screen_buffer[:, :, 0])
-    # max1 = np.max(screen_buffer[:, :, 1])
-    # min0 = np.min(screen_buffer[:, :, 0])
-    # min1 = np.min(screen_buffer[:, :, 1])
-    # print(min0, max0)
-    # print(min1, max1)
+            screen_buffer[j, i, 0] = (
+                MAX_ITER_COUNT - iter_count_1 if reverse_color else iter_count_1
+            )
+            screen_buffer[j, i, 1] = (
+                MAX_ITER_COUNT - iter_count_2 if reverse_color else iter_count_2
+            )
+            screen_buffer[j, i, 2] = (
+                MAX_ITER_COUNT - iter_count_3 if reverse_color else iter_count_3
+            )
     screen[:, :, 0] = screen_buffer[:, :, 0] / MAX_ITER_COUNT * 255
     screen[:, :, 1] = screen_buffer[:, :, 1] / MAX_ITER_COUNT * 255
     screen[:, :, 2] = screen_buffer[:, :, 2] / MAX_ITER_COUNT * 255
@@ -207,25 +286,30 @@ def compute_screen_for_poly_newton(
 
 
 if __name__ == "__main__":
-    polynomials = [
-        Polynomial([31, 69, 22, 11, 13, 99, 102]),
-        Polynomial([4, 29, 42, 49, 67, 18, 111]),
-        Polynomial([482, 333, 16, 14, 31, 69, 62]),
-    ]
+    # polynomials = [
+    #     Polynomial([31, 69, 22, 11, 13, 99, 102]),
+    #     Polynomial([4, 29, 42, 49, 67, 18, 111]),
+    #     Polynomial([482, 333, 16, 14, 31, 69, 62]),
+    # ]
     # p1 = Polynomial([-92500, 6000, 3100, -240, -1, 0, 1])
     # p1 = Polynomial([-2, 0, 1, 2])
     # p1 = Polynomial([0, 360, -48, 14, -2, 1])
     # p1 = Polynomial([-0.0036, 360, -48.0001, 14, -2.00001, 1])
+    polynomials = [
+        Polynomial([1, 0, 0, 1]),
+        Polynomial([1, 0, 2, 1]),
+        Polynomial([0, 1, 0, 1]),
+    ]
     for poly in polynomials:
         print(poly)
-    width = 300
-    height = 300
+    width = 1000
+    height = 1000
     screen = np.zeros([height, width, 3], dtype=np.uint8)
     screen_buffer = np.zeros([height, width, 3], dtype=np.int64)
     delta = 0.1
     frame = 1
-    scale_x = 0.1
-    scale_y = 0.1
+    scale_x = 0.005
+    scale_y = 0.005
     inverse_res = 1
     """
     while scale_x > 0:
@@ -249,7 +333,7 @@ if __name__ == "__main__":
             delta += 0.01
     """
     while scale_x >= 0.0001:
-        compute_screen_for_poly_newton(
+        compute_screen_for_multi_poly_newton(
             polynomials,
             width,
             height,
@@ -258,7 +342,7 @@ if __name__ == "__main__":
             screen,
             screen_buffer,
             delta,
-            -0.9,
+            reverse_color=True,
         )
         print(f"Frame: {frame} scale: {scale_x}")
         im = Image.fromarray(screen, mode="RGB")
