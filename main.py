@@ -40,12 +40,15 @@ class Polynomial:
         return self._eval_polynomial(deriv_coeffs, x)
 
     def __str__(self):
+        start = True
         res = ""
         deg = len(self.coeffs) - 1
         for coef in reversed(self.coeffs):
-            res += f"{coef}x^{deg}"
-            if deg > 0:
-                res += " + "
+            if coef != 0:
+                if not start:
+                    res += " + "
+                res += f"{coef}x^{deg}"
+                start = False
             deg -= 1
         return res
 
