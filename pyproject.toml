@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "polynomiography"
+version = "0.1.0"
+description = ""
+authors = ["İsmail Tapan <ismltpn@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+moderngl = "^5.8.1"
+moderngl-window = "^2.4.3"
+numpy = "^1.24.2"
+pyglet = "^2.0.5"
+pillow = "^9.4.0"
+
+[tool.poetry.dev-dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
