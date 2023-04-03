@@ -1,0 +1,158 @@
+%% gtu_presentation.tex
+%% GTU-Presentation LaTeX package
+%% Copyright 2017 Zafeirakis Zafeirakopoulos
+%% zafeirakopoulos@gmail.com
+  %
+  % This work may be distributed and/or modified under the
+  % conditions of the LaTeX Project Public License, either version 1.3
+  % of this license or (at your option) any later version.
+  % The latest version of this license is in
+  %   http://www.latex-project.org/lppl.txt
+  % and version 1.3 or later is part of all distributions of LaTeX
+  % version 2005/12/01 or later.
+  %
+  % This work has the LPPL maintenance status `maintained'.
+  % 
+  % The Current Maintainer of this work is Zafeirakis Zafeirakopoulos.
+  %
+
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Identification    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gtu-presentatiom}[2017/02/26 GTU Presentation LaTeX package]
+  
+ 
+\RequirePackage{graphicx}
+\RequirePackage{xparse,xstring}
+\RequirePackage[absolute,overlay]{textpos}
+
+
+\usenavigationsymbolstemplate{}
+\usebackgroundtemplate
+{
+  \includegraphics[height=\paperheight]{gtu_background.png}
+}
+
+\setbeamertemplate{footline}[text line]{%
+   \hspace{8em} 
+   \parbox{\linewidth}{
+   \vspace*{-1.5em}
+   \color{white}
+   GT\"U - Bilgisayar M\"uhendisli\u{g}i B\"ol\"um\"u
+   \qquad\qquad 495/496 Bitirme Projesi 
+   \qquad\qquad \qquad\qquad\qquad \insertpagenumber
+   }}
+
+\renewcommand{\date}[1]{\def\thedate{#1}}
+\renewcommand{\author}[1]{\def\theauthor{#1}}
+\newcommand{\advisor}[1]{\def\theadvisor{#1}}
+\renewcommand{\title}[1]{\def\thetitle{#1}}
+       
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Frontpage     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{frontpage}
+  {
+    \begin{frame}[plain]
+    \begin{center}
+      \hspace{2em}
+      \includegraphics[scale=0.35]{gtu.png}% 
+    \end{center}
+  }
+  {
+      \begin{center}
+         \vspace{1em}
+         \LARGE {\bf \thetitle}
+
+         \vspace{1em}
+         
+         \Large \theauthor
+         
+         \vspace{3em}
+
+         \large Advisor: \theadvisor
+         
+         \vspace{1em}
+         
+         \thedate
+        
+      \end{center}
+    \end{frame}
+  }
+
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    Page Format   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  
+\newcommand{\gtuopenframe}{
+  \begin{frame}
+    \begin{textblock*}{3em}(11cm,0.1cm) % {block width} (coords)
+      \includegraphics[scale=0.15]{gtu.png}%
+    \end{textblock*}
+  }
+        
+\newenvironment{contents}
+  {
+    \gtuopenframe
+    \frametitle{{\color{white} Contents}}
+  }
+  {
+    \end{frame}
+  }
+
+ \newenvironment{projectdefinition}
+  {
+    \gtuopenframe
+    \frametitle{{\color{white} Project Definition}}
+  }
+  {
+    \end{frame}
+  }
+
+ \newenvironment{projectdesign}
+  {
+    \gtuopenframe
+    \frametitle{{\color{white} Project Design}}
+  }
+  {
+    \end{frame}
+  }
+  
+ \newenvironment{projectrequirements}
+  {
+    \gtuopenframe
+    \frametitle{{\color{white} Project Requirements}}
+  }
+  {
+    \end{frame}
+  }
+  
+ \newenvironment{projectsuccess}
+  {
+    \gtuopenframe
+    \frametitle{{\color{white} Success Criteria}}
+  }
+  {
+    \end{frame}
+  }
+ \newenvironment{projectreferences}
+  {
+    \begin{frame}[allowframebreaks]
+    \frametitle{References}
+    \begin{textblock*}{3em}(11cm,0.1cm) % {block width} (coords)
+      \includegraphics[scale=0.15]{gtu.png}%
+    \end{textblock*}    \frametitle{{\color{white} References}}
+  }
+  {
+    \bibliographystyle{amsalpha}
+    \bibliography{bitirme.bib}
+    \end{frame}
+  }
+   
+        
