@@ -9,29 +9,60 @@
 \begin{frontpage}
 	\title{Polynomiography}
 	\author{İsmail Tapan}
-	\date{6 April 2023}
+	\date{5 April 2023}
 	\advisor{Tülay Ayyıldız Akoğlu}
 \end{frontpage}
 
 \begin{projectdefinition}
+    \frametitle{{\color{white} Polynomial}}
+    \textbf{Polynomial:}
+    \begin{center}
+    $a_nz^n +a_{n-1}z^{n-1} +$ ··· $+ a_1z+a_0$
+    \end{center}
+
+    where $a_n$, ... , $a_0$ are coefficients, $n$ is the degree, $a_n$ nonzero, and $z$ is a variable.
+
+    A \textbf{polynomial equation} is
+    \begin{center}        
+    $a_nz^n +a_{n-1}z^{n-1} +$ ··· $+ a_1z+a_0 = 0$
+    \end{center}
+
+    A \textbf{solution}, or \textbf{root} of a polynomial is any specific value of $z$ that would satisfy the polynomial equation
+    
+\end{projectdefinition}
+
+\begin{projectdefinition}
+    \frametitle{{\color{white} Polynomiography}}
     \begin{itemize}
-        \item[-] Explore new ways to generate  artistic images/image sequences from polynomials
-        \item[-] Create a python library that helps to use these methods
+        \item[-] a visual art form that involves visualization of complex polynomials
+        \item[-] created by Bahman Kalantari, early 2000s
     \end{itemize}
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.7\textwidth]{fig1}
         \caption{Some examples from \citet{Kalantari_2008}}
     \end{figure}
+    
+\end{projectdefinition}
+
+
+\begin{projectdefinition}
+    \begin{itemize}
+        \item[-] Explore new methods to generate  artistic images/image sequences from polynomial(s)
+        \item[-] Create a python library that helps to use these methods
+        \item[-] Examine the root distributions of polynomial groups with common features from the results
+    \end{itemize}
 \end{projectdefinition}
 
 \begin{projectdesign}
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=1\textwidth]{fig2}
+		\includegraphics[width=1\textwidth]{fig6}
 		\caption{Use Case 1}
 	\end{figure}
 \end{projectdesign}
+
 
 \begin{projectdesign}
 	\begin{figure}[h]
@@ -97,9 +128,9 @@
 
 \begin{projectsuccess}
     \begin{itemize}[leftmargin=*]
+        \item[-] 1000x1000 image, 10 deg polynomial, less than 1 min
         \item[-] At least 3 different methods that gives different result for the same polynomial
-        \item[-] 
-        \item[-] 
+        \item[-] At least 1 method that generates an image displaying the root distribution of a set of polynomials that share common features
     \end{itemize}
 \end{projectsuccess}
 
