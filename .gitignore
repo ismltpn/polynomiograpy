@@ -165,8 +165,10 @@ cython_debug/
 # --------------------------------------- Project ---------------------------------------
 
 # Media outputs
-frames/*.png
-frames/*.mp4
+*.png
+*.jpg
+*.webp
+*.mp4
 
 # Log dumps
 *.csv
