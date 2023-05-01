@@ -26,7 +26,7 @@ def compute_screen_for_single_poly(
     reverse_color=False,
     channel: int = 0,
 ):
-    assert method in {"newton", "halley", "steffensen"}, "Unknown method"
+    assert method in iter.available_methods, "Unknown method"
     func: Callable[[complex], int]
     if method == "newton":
 

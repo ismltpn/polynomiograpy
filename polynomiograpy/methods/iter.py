@@ -1,5 +1,7 @@
 from polynomiograpy import common
 
+available_methods = {"newton", "halley", "steffensen"}
+
 
 def newton_method(
     poly: common.polynomial.Polynomial,

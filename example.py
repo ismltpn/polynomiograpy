@@ -17,7 +17,7 @@ if __name__ == "__main__":
     scale_y = 6 / height
     inverse_res = 1
     polynomiograpy.compute_screen_for_single_poly(
-        "newton",
+        "steffensen",
         polynomial,
         delta,
         width,
