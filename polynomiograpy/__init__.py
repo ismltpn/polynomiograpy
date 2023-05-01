@@ -4,7 +4,7 @@ from polynomiograpy.compute_screen import compute_screen
 from polynomiograpy.methods import iter
 import numpy as np
 
-__version__ = "0.1.0.dev1"
+__version__ = "0.1.0.a1"
 
 __all__ = ["compute_screen_for_single_poly", "Polynomial"]
 
