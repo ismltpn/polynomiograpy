@@ -10,7 +10,7 @@ __all__ = ["compute_screen_for_single_poly", "Polynomial"]
 
 
 def compute_screen_for_single_poly(
-    method: Literal["newton"],
+    method: Literal["newton", "halley", "steffensen"],
     poly: Polynomial,
     delta: float,
     width: int,
@@ -26,12 +26,34 @@ def compute_screen_for_single_poly(
     reverse_color=False,
     channel: int = 0,
 ):
-    assert method in {"newton"}, "Unknown method"
+    assert method in {"newton", "halley", "steffensen"}, "Unknown method"
     func: Callable[[complex], int]
     if method == "newton":
 
         def func(val: complex) -> int:
             new_val, iter_count = iter.newton_method(
+                poly,
+                val,
+                delta,
+                max_iter_count=max_value,
+            )
+            return iter_count
+
+    elif method == "halley":
+
+        def func(val: complex) -> int:
+            new_val, iter_count = iter.halley_method(
+                poly,
+                val,
+                delta,
+                max_iter_count=max_value,
+            )
+            return iter_count
+
+    elif method == "steffensen":
+
+        def func(val: complex) -> int:
+            new_val, iter_count = iter.steffensen_method(
                 poly,
                 val,
                 delta,
