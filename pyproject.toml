@@ -3,6 +3,17 @@ name = "polynomiography"
 version = "0.1.0"
 description = ""
 authors = ["İsmail Tapan <ismltpn@gmail.com>"]
+maintainers = ["İsmail Tapan <ismltpn@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = ""
+repository = "https://github.com/ismltpn/polynomiograpy/"
+documentation = ""
+keywords = [
+    "Polynomiography",
+    "Polynomials",
+    "Visual Art"
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
