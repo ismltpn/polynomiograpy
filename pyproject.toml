@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "polynomiography"
+name = "polynomiograpy"
 version = "0.1.0"
 description = ""
 authors = ["İsmail Tapan <ismltpn@gmail.com>"]
