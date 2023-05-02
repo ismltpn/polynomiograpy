@@ -1,7 +1,8 @@
 import numpy as np
 from PIL import Image
 from polynomiograpy.common.polynomial import Polynomial
-from polynomiograpy.methods.iter import available_methods
+from polynomiograpy.iterations.methods import available_methods
+from polynomiograpy.iterations import compute_screen_for_single_poly
 
 __all__ = ["run"]
 
@@ -14,8 +15,6 @@ def input_with_default(prompt, default):
 
 
 def run():
-    from polynomiograpy import compute_screen_for_single_poly
-
     print("** Complex Plane Setup **")
     min_real = int(input_with_default("Min Real (-3): ", "-3"))
     max_real = int(input_with_default("Max Real (3): ", "3"))

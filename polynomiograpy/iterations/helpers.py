@@ -2,7 +2,7 @@ from typing import Callable
 import numpy as np
 
 
-def compute_screen(
+def compute_np_screen(
     func: Callable[[complex], int],
     width: int,
     height: int,
@@ -18,7 +18,7 @@ def compute_screen(
     channel: int = 0,
 ):
     assert len(screen.shape) >= 3, "Wrong shape for screen"
-    assert len(screen_buffer.shape) >= 3, "Wrong shape for screen"
+    assert len(screen_buffer.shape) >= 3, "Wrong shape for screen buffer"
     assert screen.shape == screen_buffer.shape, "screen shape != screen buffer shape"
     origin_x = width / 2
     origin_y = height / 2
