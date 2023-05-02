@@ -88,14 +88,12 @@ def run_iter():
     min_imag = int(input_with_default("Min Imag (-3): ", "-3"))
     max_imag = int(input_with_default("Max Imag (3): ", "3"))
     print("** Polynomial **")
-    poly_degree = int(input("Degree of the polynomial: "))
-    coeffs = []
-    for i in range(poly_degree + 1):
-        coeffs.append(
-            int(input_with_default(f"Int coefficient of x^{poly_degree-i} (1): ", "1"))
-        )
-    coeffs.reverse()
-    poly = Polynomial(coeffs=coeffs)
+    coeffs: str = input_with_default(
+        "Coefficients from degree d to 0 (1,0,0,1): ", "1,0,0,1"
+    )
+    parsed_coeffs = [int(e) for e in coeffs.split(",")]
+    parsed_coeffs.reverse()
+    poly = Polynomial(coeffs=parsed_coeffs)
     print(f"Polynomial: {poly}")
     print("** Method **")
     print(f"Available methods: {available_methods}")
