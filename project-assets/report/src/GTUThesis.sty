@@ -1,0 +1,172 @@
+\ProvidesPackage{GTUThesis}%2021/08 V0.1, Usama Derbashi
+\RequirePackage{{pgffor,etoolbox}}%foreach, notblank
+\RequirePackage{array}%table(m)
+\RequirePackage{titlesec}%titleformat
+\RequirePackage{fancyhdr}%fancyfoot
+\RequirePackage{newtxtext}%Times New Roman-esque font
+\usepackage{tabularx,booktabs}
+
+
+\newcommand*{\faculty}[1]{\gdef\@faculty{#1}%
+}
+\newcommand*{\@faculty}{FACULTY OF ENGINEERING}
+
+\newcommand*{\department}[1]{\gdef\@department{#1}%
+}
+\newcommand*{\@department}{COMPUTER ENGINEERING DEPARTMENT}
+
+\newcommand*{\project}[1]{\gdef\@project{#1}%
+}
+\newcommand*{\@project}{Final Thesis}
+
+\newcommand*{\theyear}[1]{\gdef\@theyear{#1}%
+}
+\newcommand*{\@theyear}{\the\year{}}
+
+\newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}%
+}
+\newcommand*{\@supervisor}{\texttt{\string \supervisor} currently
+not set. Please fix this.}
+
+\renewcommand{\footnoterule}{%
+  \hrule width \textwidth%
+}
+
+\newenvironment{outertitles}{%
+    \titleformat{\chapter}[hang]{\normalfont\bfseries\centering}{}{0pt}{\LARGE\MakeUppercase}%
+    \titleformat{\section}[hang]{\normalfont\bfseries}{}{0pt}{\Large}%
+    \titlespacing*{\chapter}{0pt}{0pt}{24pt}%
+}{}
+
+\renewenvironment{quote}{%
+\it``}{"}
+
+
+\newcommand{\projecttitlepageenglish}{	
+    \thispagestyle{empty}
+    \begin{spacing}{2}
+    		\begin{center}    
+    		\fontsize{18}{16.8}\normalfont
+    			\textbf{ T.R.  \\ \hspace{1.0cm}GEBZE TECHNICAL UNIVERSITY\\\hspace{0.5cm} FACULTY OF ENGINEERING\\ DEPARTMENT OF COMPUTER ENGINEERING}\\[1.5cm] 
+    			\vspace{1cm}
+    	    	\end{center}
+      \end{spacing}
+
+    	 
+\newcolumntype{k}{>{\centering\arraybackslash}X p{14cm} }   
+\begin{table}[hbt!]
+\centering
+\begin{tabular}{| k |}
+
+\hline
+  \\
+  \\
+\onehalfspacing
+ \fontsize{18}{16.8}\normalfont      \MakeUppercase \@title    \\
+\singlespacing
+  \\
+  \\
+  \\
+  \\
+  \fontsize{18}{16.8}\normalfont  \MakeUppercase \@author   \\
+  \\
+  \\
+  \\
+  \\
+  \\
+  \fontsize{14}{16.8}\normalfont  SUPERVISOR               \\
+  \rule{0pt}{0.5cm} \fontsize{16}{16.8}\normalfont \MakeUppercase \@supervisor    \\
+  \\
+  \\
+  \\
+   \fontsize{16}{16.8}\normalfont  GEBZE           \\
+ \rule{0pt}{0.5cm}  \fontsize{16}{16.8}\normalfont  \MakeUppercase \@theyear     \\
+  \\
+  \\ 
+\hline
+\end{tabular}
+\end{table}
+%      \restoregeometry
+    }
+    
+
+
+\renewcommand*{\maketitle}{%
+
+
+    \begin{titlepage}
+    {\setlength{\parindent}{0cm} %suppresses indentation
+    	\begin{center}
+    	\null
+    	\vfill
+        {\bf\Large\MakeUppercase{
+            T.R.\\
+            GEBZE TECHNICAL UNIVERSITY\\
+            \@faculty\\
+            \@department\\
+        }}
+        \vfill
+        
+        {\bf\LARGE\MakeUppercase{\@title\\}}
+        \vfill
+        
+        {\bf\Large\MakeUppercase{\@author\\ }}
+        \vfill
+        
+        {\Large\MakeUppercase{
+            SUPERVISOR\\
+            \@supervisor        }}
+        \vfill
+        
+        {\bf\Large\MakeUppercase{
+            \@theyear\\
+            GEBZE
+        }}
+        \vfill
+        
+        \end{center}
+    }
+    \end{titlepage}
+}
+
+\newcommand*{\makejury}[2]{%decree, date of decree, date of defence, comma separated jury without supervisor
+    % leave the first two arguments empty in case you don't have a decree
+    \thispagestyle{empty}
+    \begin{center}
+        \begin{tabular}{|m{6.75cm}|>{\centering\arraybackslash}m{6.75cm}|}
+            \hline
+            \vspace{1mm}\includegraphics[width=6.75cm]{gtu_logo.jpg} & \MakeUppercase{\hspace{0.3cm} graduation project \newline jury approval form}\\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    
+    \vspace{1cm}
+    {%
+        This study has been accepted as an Undergraduate Graduation Project in the
+Department of Computer Engineering on {#1} by the following jury.
+
+    }
+    \vspace{1cm}
+    \begin{center}
+        \bf JURY
+    \end{center}
+    
+    % Create jury table content
+    % unfortunately foreach doesn't work inside tabular environment
+    \newcommand*\jurytablecontents{} 
+    \foreach \entry in {#2}{
+        \xappto\jurytablecontents{Member&:& \entry \\\\\\}
+    }
+    
+    \begin{tabular}{lcl}
+        Member\\(Supervisor)&:&  \@supervisor\\\\\\
+        \jurytablecontents{}
+    \end{tabular}
+    
+    
+    \clearpage
+}
+
+
+\endinput

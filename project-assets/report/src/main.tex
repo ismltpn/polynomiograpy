@@ -1,0 +1,151 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is a thesis template for Gebze Technical University.
+%
+% Please only edit the areas proceeded by a comment starting with %%
+% otherwise the template may be broken.
+%
+% This file is only to be used for editing the general fields
+% and inputting the body of the thesis in the designated areas.
+% Please write the body of the thesis in separate files, and input
+% them as shown in the comment preceding the area.
+%
+% Created in Aug 2021 by Usama Derbashi.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{report}
+
+
+% Language and typeset setting
+\usepackage[english]{babel}
+\usepackage[a4paper,top=25mm,bottom=25mm,left=40mm,right=25mm]{geometry}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{algorithm, algpseudocode}
+\usepackage{indentfirst}
+\setlength{\parindent}{1cm}
+\setlength{\abovecaptionskip}{12pt plus 0pt minus 0pt}
+\setlength{\belowcaptionskip}{12pt plus 0pt minus 0pt}
+\setlength{\textfloatsep}{18.0pt plus 0.0pt minus 0.0pt}
+\setlength{\floatsep}{18.0pt plus 0.0pt minus 0.0pt}
+\setlength{\intextsep}{18.0pt plus 0.0pt minus 0.0pt}
+\setlength{\skip\footins}{18.0pt plus 0.0pt minus 0.0pt}
+
+% Core packages and settings
+\usepackage[colorlinks=false]{hyperref}
+\usepackage{amsmath}
+
+\usepackage{titlesec} %setting the titles of chapters and sections
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\titleformat{\chapter}[hang]{\normalfont\bfseries\MakeUppercase}{}{0pt}{\LARGE\thechapter. }
+\titleformat{\section}[hang]{\normalfont\bfseries}{}{0pt}{\Large\thesection. }
+\titleformat{\subsection}[hang]{\normalfont\bfseries}{}{0pt}{\large\thesubsection. }
+\titleformat{\subsubsection}[hang]{\normalfont\bfseries}{}{0pt}{\large\thesubsubsection. }
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+\titlespacing*{\section}{0pt}{18pt}{18pt}
+\titlespacing*{\subsection}{0pt}{18pt}{18pt}
+\titlespacing*{\subsubsection}{0pt}{18pt}{18pt}
+
+\usepackage{graphicx}
+\graphicspath{{./Imgs/}} %pointing the directory of images
+
+\usepackage{fancyhdr} % setting footers
+\usepackage{etoolbox} 
+\renewcommand{\headrulewidth}{0pt}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\fontsize{11pt}{11pt}\thepage}
+
+\usepackage[style=ieee]{biblatex}
+\addbibresource{refs.bib}
+\usepackage{csquotes}% Needed for babel(in biblatex)
+
+\usepackage[bottom, perpage]{footmisc}%% amkes footnotes at the bottom
+
+\usepackage{GTUThesis}
+
+
+% Additional packages if needed
+%% For the sake of not messing the template add them here
+
+\usepackage{xcolor}
+\definecolor{light-blue}{HTML}{6b85dd}
+\definecolor{dark-blue}{HTML}{4266d5}
+\definecolor{light-red}{HTML}{d66661}
+\definecolor{dark-red}{HTML}{c93d39}
+\definecolor{light-green}{HTML}{6bab5b}
+\definecolor{dark-green}{HTML}{3b972e}
+\definecolor{light-purple}{HTML}{aa7dc0}
+\definecolor{dark-purple}{HTML}{945bb0}
+\usepackage{listings, minted}
+
+\usepackage{multicol}
+\usepackage{changepage}
+\usepackage[export]{adjustbox}
+\usepackage{lipsum}
+
+
+% Important information
+%% Make sure to enter all the info below
+\title{Polynomiography}
+\author{İSMAİL TAPAN}
+\faculty{Faculty of Engineering}
+\department{Computer Engineering Department}
+\supervisor{Dr. Tülay Ayyıldız Akoğlu}
+\theyear{2023}
+
+
+\begin{document}
+
+%Front Matter
+\pagenumbering{roman} %start with roman numbering 
+\projecttitlepageenglish
+\maketitle
+\setcounter{page}{3} %the first two title pages are not counted so this is a buffer
+\begin{outertitles} % makes titles centred
+
+%% below enter as follows 
+%% {DATE_OF_DEMO}{JURY}
+%% Note that JURY should be comma separated
+\makejury{19/01/2023}{Prof. Dr. Didem GÖZÜPEK}
+\input{./Body/Frontmatter/Abstract}
+% \input{./Body/Frontmatter/ListOfAcro}
+
+\tableofcontents
+\addcontentsline{toc}{chapter}{Contents}
+\clearpage
+
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\clearpage
+
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+\clearpage
+
+\end{outertitles}
+\fancyhf{}%reset footer
+\fancyfoot[R]{\fontsize{11pt}{11pt}\thepage}%page numbers in the corner
+\addtocontents{toc}{\protect\vspace{18pt}}
+\pagenumbering{arabic}%turn to arabic numbers
+
+% Mainmatter
+
+%% Only input files, don't write here
+%% \input{./Body/Mainmatter/FILE}
+\input{./Body/Mainmatter/Introduction}
+\input{./Body/Mainmatter/Implementation}
+\input{./Body/Mainmatter/Tests}
+\input{./Body/Mainmatter/Conclusions}
+
+% DON'T INPUT FILES AFTER HERE
+\begin{outertitles}
+\clearpage
+\setlength{\emergencystretch}{1em}
+\printbibliography
+\addtocontents{toc}{\protect\vspace{18pt}}
+\addcontentsline{toc}{chapter}{Bibliography}
+%% If you don't want a CV or appendices add a % at the beginning of the relevant line
+% \input{./Body/Backmatter/CV}
+\input{./Body/Backmatter/Appendices}
+\end{outertitles}
+\end{document}

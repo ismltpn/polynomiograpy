@@ -1,0 +1,154 @@
+\chapter{Introduction}
+
+\section{Polynomials}
+// TODO: extend this to polynomial rings
+
+A polynomial is a mathematical expression of the form:
+
+\begin{center}
+$a_nz^n +a_{n-1}z^{n-1} + \cdots + a_1z+a_0$
+\end{center}
+
+where $a_n$, $a_{n-1}$, $\dots$, $a_0$ are coefficients, $n$ is the degree, $a_n$ is nonzero, and $z$ is a variable.
+
+The degree of a polynomial is the highest power of the variable $z$ in the expression. For example, the polynomial $3z^2 + 2z - 1$ has degree 2, while the polynomial $4z^3 + 7z^2 - 5z + 1$ has degree 3.
+
+A polynomial equation is an equation of the form:
+
+\begin{center}
+$a_nz^n +a_{n-1}z^{n-1} + \cdots + a_1z+a_0 = 0$
+\end{center}
+
+A solution, or root, of a polynomial is any specific value of $z$ that would satisfy the polynomial equation.
+
+\subsection{Polynomial Rings over Finite Fields}
+A polynomial ring over a finite field is a set of polynomials with coefficients taken from a finite field. Given a finite field $F_q$ with $q$ elements, the polynomial ring over $F_q$ is denoted by $F_q[x]$ and the elements of $F_q[x]$ are polynomials of the form:
+
+\begin{center}
+$f(x) = a_0 + a_1x + a_2x^2 + \cdots + a_nx^n$
+\end{center}
+
+where $a_0, a_1, \dots, a_n \in F_q$ and $n$ is a non-negative integer.
+
+(e.g.) All degree 3 polynomials of $F_q[x]$ where $F_q = {0, 1}$:
+\begin{multicols}{4}
+\begin{itemize}
+    \item $x^3$
+    \item $x^3 + 1$
+    \item $x^3 + x$
+    \item $x^3 + x + 1$
+    \item $x^3 + x^2$
+    \item $x^3 + x^2 + 1$
+    \item $x^3 + x^2 + x$
+    \item $x^3 + x^2 + x + 1$
+\end{itemize}
+\end{multicols}
+
+\section{Root finding algorithms}
+
+In mathematics and computing, a root algorithm is an algorithm for finding roots of continuous polynomial functions. Most of the root finding algorithms are iteration based, they require one or more initial values and try to converge to the a root of the function in each iteration. These methods don't find an exact solution but an approximation to a root.
+
+\lstset{
+  basicstyle=\footnotesize,
+  mathescape
+}
+
+\subsection{Iterative methods}
+\subsubsection{Householder's methods (Derivative Based Methods)}
+    It's an iterative method that uses this generic formula to converge to a root:
+    \[x_{n+1}=x_{n}+d{\frac {(1/f)^{(d-1)}(x_{n})}{(1/f)^{(d)}(x_{n})}}\]
+
+    where $f^{(n)}$ denotes the $(n)$th derivative of $f$.
+
+    The methods that uses first two order of this formula have special names, Newton's Method and Halley's method respectively.
+    
+\paragraph{Newton's Method} 
+    $\newline$
+    If you plug 1 as d in the previous formula, you get the following formula:
+    \[x_{n+1}=x_{n}+{\frac {(1/f)(x_{n})}{(1/f)^{(1)}(x_{n})}}\]
+    \[x_{n+1}=x_{n}+{\frac {\frac{1}{f(x_{n})}}{-\frac{f'(x_{n})}{f^2(x_{n})}}}\]
+    \[x_{n+1}=x_{n}+{\frac {1}{f(x_{n})}(-\frac{f^2(x_{n})}{f'(x_{n})})}\]    
+    \[x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\]
+    
+So the algorithm will be as follow:
+\begin{lstlisting}
+        1 - Start with some $x$
+        2 - Iterate the following formula until the difference 
+        between $x_n$ and $x_{n+1}$ is less then some $\epsilon$
+                $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$
+        3 - Return the approximated value [and iteration count]
+\end{lstlisting}
+\paragraph{Halley's Method}
+    $\newline$
+    If you plug 2 as d in the previous formula, you get the following formula:
+    \[x_{n+1}=x_{n}+{\frac {(1/f)^{(1)}(x_{n})}{(1/f)^{(2)}(x_{n})}}\]
+    \[x_{n+1}=x_{n}+{\frac{-\frac{f'(x_{n})}{f^2(x_{n})}}{\frac{f''(x_{n})}{f^2(x_{n})} - 2\frac{f'(x_{n})f'(x_{n})}{f^3(x_{n})}}}\]
+    \[x_{n+1}=x_{n}+{(-\frac{f'(x_{n})}{f^2(x_{n})}) (\frac{f''(x_{n})}{f^2(x_{n})} - 2\frac{f'(x_{n})f'(x_{n})}{f^3(x_{n})})^{-1} }\] 
+    \[x_{n+1}=x_{n}+{(-\frac{f'(x_{n})}{f^2(x_{n})}) (\frac{f(x_{n})f''(x_{n}) - 2f'(x_{n})f'(x_{n})}{f^3(x_{n})})^{-1} }\]
+    \[x_{n+1}=x_{n}+{(-\frac{f'(x_{n})}{f^2(x_{n})}) (\frac{f^3(x_{n})}{f(x_{n})f''(x_{n}) - 2f'(x_{n})f'(x_{n})}) }\]
+    \[x_{n+1} = x_n -\frac{f(x_{n})f'(x_{n})}{2f'(x_{n})f'(x_{n}) - f(x_{n})f''(x_{n})}\]
+
+So the algorithm will be as follow:
+\begin{lstlisting}
+    1 - Start with some $x$
+    2 - Iterate the following formula until the difference 
+    between $x_n$ and $x_{n+1}$ is less then some $\epsilon$
+            $x_{n+1} = x_n -\frac{f(x_{n})f'(x_{n})}{2f'(x_{n})f'(x_{n}) - f(x_{n})f''(x_{n})}$
+    3 - Return the approximated value [and iteration count]
+\end{lstlisting}
+
+
+\paragraph{Others}
+    $\newline$
+This method can be implemented for higher orders too. The only thing that will change is the formula that computes the next iteration in the algorithm.
+
+A general algorithm can be written as:
+\begin{lstlisting}
+    1 - Start with some $x$
+    2 - Iterate the following formula until the difference 
+    between $x_n$ and $x_{n+1}$ is less then some $\epsilon$
+            $x_{n+1} =$ //$x_n$ plugged into derived formula
+    3 - Return the approximated value [and iteration count]
+\end{lstlisting}
+
+\newpage
+\subsubsection{Steffensen's Method}
+// TODO: maybe explain how it is obtained or cite
+
+In this method the next iteration is computed with the following formula:
+\[x_{n+1} = x_n -\frac{f(x_{n})}{\frac{f(x_n + f(x_n))}{f(x_n)} - 1}\]
+
+
+So the algorithm will be as follow:
+\begin{lstlisting}
+    1 - Start with some $x$
+    2 - Iterate the following formula until the difference 
+    between $x_n$ and $x_{n+1}$ is less then some $\epsilon$
+            $x_{n+1} = x_n -\frac{f(x_{n})}{\frac{f(x_n + f(x_n))}{f(x_n)} - 1}$
+    3 - Return the approximated value [and iteration count]
+\end{lstlisting}
+
+
+\subsubsection{Secant Method}
+    // TODO: implement
+
+\subsubsection{Inverse Interpolation}
+    // TODO: implement
+
+\subsection{Bracketing methods}
+    // note sure if it's possible to implement bracketing methods for polynomiography since we will need one input that gives positive and one input that gives negative result to start
+\subsubsection{Bisection Method}
+    // TODO: implement
+    
+\subsubsection{False Position (Regula Falsi)}
+    // TODO: implement
+    
+\subsection{Combinations of methods}
+\subsubsection{Brent's Method}
+    Combination of bisection method, the secant method and inverse quadratic interpolation.
+    
+    // note sure if it's possible to implement bracketing methods for polynomiography since we will need one input that gives positive and one input that gives negative result to start
+    
+    // TODO: implement
+
+
