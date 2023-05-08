@@ -1,6 +1,7 @@
+from typing import Optional
 from polynomiograpy import common
 
-available_methods = {"newton", "halley", "steffensen"}
+available_methods = {"newton", "halley", "secant", "steffensen"}
 
 
 def newton_method(
@@ -16,7 +17,7 @@ def newton_method(
     res = poly.eval(x)
     deriv_res = poly.eval_deriv(x)
     if deriv_res == 0:
-        return x, 0
+        return x, max_iter_count - step
     newton_res = x - res / deriv_res
     if abs(newton_res - x) < delta:
         return newton_res, 0
@@ -54,6 +55,38 @@ def halley_method(
         new_res, count = halley_method(
             poly,
             halley_res,
+            delta,
+            step=step + 1,
+            max_iter_count=max_iter_count,
+        )
+        return new_res, count + 1
+
+
+def secant_method(
+    poly: common.polynomial.Polynomial,
+    x_0: complex,
+    x_1: Optional[complex],
+    delta: float,
+    *,
+    step: int = 0,
+    max_iter_count: int = 16,
+) -> tuple[complex, int]:
+    if step > max_iter_count:
+        return x_0, 0
+    if x_1 is None:
+        x_1, _ = newton_method(poly, x_0, delta, step=0, max_iter_count=0)
+    fx_0 = poly.eval(x_0)
+    fx_1 = poly.eval(x_1)
+    if fx_1 == fx_0:
+        return x_1, max_iter_count - step
+    res = x_1 - fx_1 * (x_1 - x_0) / (fx_1 - fx_0)
+    if abs(res - x_1) < delta:
+        return res, 0
+    else:
+        new_res, count = secant_method(
+            poly,
+            fx_1,
+            res,
             delta,
             step=step + 1,
             max_iter_count=max_iter_count,

@@ -12,7 +12,7 @@ __all__ = [
 
 
 def compute_screen_for_single_poly(
-    method: Literal["newton", "halley", "steffensen"],
+    method: Literal["newton", "halley", "secant", "steffensen"],
     poly: Polynomial,
     delta: float,
     width: int,
@@ -47,6 +47,18 @@ def compute_screen_for_single_poly(
             new_val, iter_count = methods.halley_method(
                 poly,
                 val,
+                delta,
+                max_iter_count=max_value,
+            )
+            return iter_count
+
+    elif method == "secant":
+
+        def func(val: complex) -> int:
+            new_val, iter_count = methods.secant_method(
+                poly,
+                val,
+                None,
                 delta,
                 max_iter_count=max_value,
             )
