@@ -6,6 +6,7 @@ available_methods = {
     "newton",
     "halley",
     "inverse_interpolation",
+    "mullers",
     "secant",
     "steffensen",
 }
@@ -128,6 +129,8 @@ def mullers_method(
     fx_0 = poly.eval(x_0)
     fx_1 = poly.eval(x_1)
     fx_2 = poly.eval(x_2)
+    if x_1 == x_0:
+        return x_2, 0
     q = (x_2 - x_1) / (x_1 - x_0)
     a = q * fx_2 - q * (1 + q) * fx_1 + q**2 * fx_0
     b = (2 * q + 1) * fx_2 - (1 + q) ** 2 * fx_1 + q**2 * fx_0
@@ -137,7 +140,7 @@ def mullers_method(
         b - np.sqrt(b * b - 4 * a * c),
     )
     if denom == 0:
-        return x_1, max_iter_count - step
+        return x_2, max_iter_count - step
     res = x_2 - (x_2 - x_1) * (2 * c) / denom
     if abs(res - x_2) < delta:
         return res, 0
