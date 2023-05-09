@@ -16,6 +16,7 @@ def compute_screen_for_single_poly(
         "newton",
         "halley",
         "inverse_interpolation",
+        "mullers",
         "secant",
         "steffensen",
     ],
@@ -62,6 +63,19 @@ def compute_screen_for_single_poly(
 
         def func(val: complex) -> int:
             new_val, iter_count = methods.inverse_interpolation_method(
+                poly,
+                val,
+                None,
+                None,
+                delta,
+                max_iter_count=max_value,
+            )
+            return iter_count
+
+    elif method == "mullers":
+
+        def func(val: complex) -> int:
+            new_val, iter_count = methods.mullers_method(
                 poly,
                 val,
                 None,

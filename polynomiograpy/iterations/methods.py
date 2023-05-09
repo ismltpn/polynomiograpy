@@ -1,5 +1,6 @@
 from typing import Optional
 from polynomiograpy import common
+import numpy as np
 
 available_methods = {
     "newton",
@@ -97,6 +98,51 @@ def inverse_interpolation_method(
         return res, 0
     else:
         new_res, count = inverse_interpolation_method(
+            poly,
+            x_1,
+            x_2,
+            res,
+            delta,
+            step=step + 1,
+            max_iter_count=max_iter_count,
+        )
+        return new_res, count + 1
+
+
+def mullers_method(
+    poly: common.polynomial.Polynomial,
+    x_0: complex,
+    x_1: Optional[complex],
+    x_2: Optional[complex],
+    delta: float,
+    *,
+    step: int = 0,
+    max_iter_count: int = 16,
+) -> tuple[complex, int]:
+    if step > max_iter_count:
+        return x_0, 0
+    if x_1 is None:
+        x_1, _ = newton_method(poly, x_0, delta, step=0, max_iter_count=0)
+    if x_2 is None:
+        x_2, _ = newton_method(poly, x_1, delta, step=0, max_iter_count=0)
+    fx_0 = poly.eval(x_0)
+    fx_1 = poly.eval(x_1)
+    fx_2 = poly.eval(x_2)
+    q = (x_2 - x_1) / (x_1 - x_0)
+    a = q * fx_2 - q * (1 + q) * fx_1 + q**2 * fx_0
+    b = (2 * q + 1) * fx_2 - (1 + q) ** 2 * fx_1 + q**2 * fx_0
+    c = (1 + q) * fx_2
+    denom = max(
+        b + np.sqrt(b * b - 4 * a * c),
+        b - np.sqrt(b * b - 4 * a * c),
+    )
+    if denom == 0:
+        return x_1, max_iter_count - step
+    res = x_2 - (x_2 - x_1) * (2 * c) / denom
+    if abs(res - x_2) < delta:
+        return res, 0
+    else:
+        new_res, count = mullers_method(
             poly,
             x_1,
             x_2,
