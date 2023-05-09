@@ -85,7 +85,7 @@ def secant_method(
     else:
         new_res, count = secant_method(
             poly,
-            fx_1,
+            x_1,
             res,
             delta,
             step=step + 1,
