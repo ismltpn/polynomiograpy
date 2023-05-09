@@ -12,7 +12,13 @@ __all__ = [
 
 
 def compute_screen_for_single_poly(
-    method: Literal["newton", "halley", "secant", "steffensen"],
+    method: Literal[
+        "newton",
+        "halley",
+        "inverse_interpolation",
+        "secant",
+        "steffensen",
+    ],
     poly: Polynomial,
     delta: float,
     width: int,
@@ -47,6 +53,19 @@ def compute_screen_for_single_poly(
             new_val, iter_count = methods.halley_method(
                 poly,
                 val,
+                delta,
+                max_iter_count=max_value,
+            )
+            return iter_count
+
+    elif method == "inverse_interpolation":
+
+        def func(val: complex) -> int:
+            new_val, iter_count = methods.inverse_interpolation_method(
+                poly,
+                val,
+                None,
+                None,
                 delta,
                 max_iter_count=max_value,
             )

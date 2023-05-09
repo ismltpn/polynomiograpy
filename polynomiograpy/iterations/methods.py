@@ -1,7 +1,13 @@
 from typing import Optional
 from polynomiograpy import common
 
-available_methods = {"newton", "halley", "secant", "steffensen"}
+available_methods = {
+    "newton",
+    "halley",
+    "inverse_interpolation",
+    "secant",
+    "steffensen",
+}
 
 
 def newton_method(
@@ -55,6 +61,46 @@ def halley_method(
         new_res, count = halley_method(
             poly,
             halley_res,
+            delta,
+            step=step + 1,
+            max_iter_count=max_iter_count,
+        )
+        return new_res, count + 1
+
+
+def inverse_interpolation_method(
+    poly: common.polynomial.Polynomial,
+    x_0: complex,
+    x_1: Optional[complex],
+    x_2: Optional[complex],
+    delta: float,
+    *,
+    step: int = 0,
+    max_iter_count: int = 16,
+) -> tuple[complex, int]:
+    if step > max_iter_count:
+        return x_0, 0
+    if x_1 is None:
+        x_1, _ = newton_method(poly, x_0, delta, step=0, max_iter_count=0)
+    if x_2 is None:
+        x_2, _ = newton_method(poly, x_1, delta, step=0, max_iter_count=0)
+    fx_0 = poly.eval(x_0)
+    fx_1 = poly.eval(x_1)
+    fx_2 = poly.eval(x_2)
+    if fx_2 == fx_1 or fx_2 == fx_0 or fx_1 == fx_0:
+        return x_1, max_iter_count - step
+    term1 = x_0 * (fx_1 * fx_2 / ((fx_0 - fx_1) * (fx_0 - fx_2)))
+    term2 = x_1 * (fx_0 * fx_2 / ((fx_1 - fx_0) * (fx_1 - fx_2)))
+    term3 = x_2 * (fx_0 * fx_1 / ((fx_2 - fx_0) * (fx_2 - fx_1)))
+    res = term1 + term2 + term3
+    if abs(res - x_1) < delta:
+        return res, 0
+    else:
+        new_res, count = inverse_interpolation_method(
+            poly,
+            x_1,
+            x_2,
+            res,
             delta,
             step=step + 1,
             max_iter_count=max_iter_count,
