@@ -4,7 +4,10 @@ from polynomiograpy.common.finite_field import FiniteField
 from polynomiograpy.common.polynomial import Polynomial
 from polynomiograpy.iterations.methods import available_methods
 from polynomiograpy.iterations import compute_screen_for_single_poly
-from polynomiograpy.roots import compute_screen_for_finite_field_poly
+from polynomiograpy.roots import (
+    compute_screen_for_finite_field_poly,
+    compute_screen_for_finite_field_poly_multi_color,
+)
 
 __all__ = ["run"]
 
@@ -33,10 +36,10 @@ def run():
 
 def run_root():
     print("** Complex Plane Setup **")
-    min_real = int(input_with_default("Min Real (-3): ", "-3"))
-    max_real = int(input_with_default("Max Real (3): ", "3"))
-    min_imag = int(input_with_default("Min Imag (-3): ", "-3"))
-    max_imag = int(input_with_default("Max Imag (3): ", "3"))
+    min_real = float(input_with_default("Min Real (-3): ", "-3"))
+    max_real = float(input_with_default("Max Real (3): ", "3"))
+    min_imag = float(input_with_default("Min Imag (-3): ", "-3"))
+    max_imag = float(input_with_default("Max Imag (3): ", "3"))
     print("** Finite Field **")
     finite_field_elements: str = input_with_default(
         "Finite field elements (1,0): ", "1,0"
@@ -48,6 +51,13 @@ def run_root():
     print("** Output Setup **")
     width = int(input_with_default("Width (1000): ", "1000"))
     height = int(input_with_default("Height (1000): ", "1000"))
+    multi_color = (
+        input_with_default(
+            "Use different color for each degree? (Deg diff must be at most 7) (y/N): ",
+            "n",
+        )
+        == "y"
+    )
     color_range = int(input_with_default("Color range (8): ", "8"))
     output_filename = input_with_default("Output (out.png): ", "out.png")
 
@@ -62,20 +72,36 @@ def run_root():
     scale_y = (max_imag - min_imag) / height
     shift_x = (max_real + min_real) / 2
     shift_y = (max_imag + min_imag) / 2
-    compute_screen_for_finite_field_poly(
-        finite_field,
-        min_degree,
-        max_degree,
-        width,
-        height,
-        screen,
-        screen_buffer,
-        scale_x=scale_x,
-        scale_y=scale_y,
-        shift_x=shift_x,
-        shift_y=shift_y,
-        color_range=color_range,
-    )
+    if multi_color:
+        compute_screen_for_finite_field_poly_multi_color(
+            finite_field,
+            min_degree,
+            max_degree,
+            width,
+            height,
+            screen,
+            screen_buffer,
+            scale_x=scale_x,
+            scale_y=scale_y,
+            shift_x=shift_x,
+            shift_y=shift_y,
+            color_range=color_range,
+        )
+    else:
+        compute_screen_for_finite_field_poly(
+            finite_field,
+            min_degree,
+            max_degree,
+            width,
+            height,
+            screen,
+            screen_buffer,
+            scale_x=scale_x,
+            scale_y=scale_y,
+            shift_x=shift_x,
+            shift_y=shift_y,
+            color_range=color_range,
+        )
     im = Image.fromarray(screen, mode="RGB")
     im.save(output_filename, format="PNG")
     print(f"Saved to {output_filename}")
@@ -83,10 +109,10 @@ def run_root():
 
 def run_iter():
     print("** Complex Plane Setup **")
-    min_real = int(input_with_default("Min Real (-3): ", "-3"))
-    max_real = int(input_with_default("Max Real (3): ", "3"))
-    min_imag = int(input_with_default("Min Imag (-3): ", "-3"))
-    max_imag = int(input_with_default("Max Imag (3): ", "3"))
+    min_real = float(input_with_default("Min Real (-3): ", "-3"))
+    max_real = float(input_with_default("Max Real (3): ", "3"))
+    min_imag = float(input_with_default("Min Imag (-3): ", "-3"))
+    max_imag = float(input_with_default("Max Imag (3): ", "3"))
     print("** Polynomial **")
     coeffs: str = input_with_default(
         "Coefficients from degree d to 0 (1,0,0,1): ", "1,0,0,1"
