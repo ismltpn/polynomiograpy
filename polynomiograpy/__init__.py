@@ -6,7 +6,7 @@ from polynomiograpy.roots import (
     compute_screen_for_finite_field_poly_multi_color,
 )
 
-__version__ = "0.3.0.a1"
+__version__ = "0.4.0.a1"
 
 __all__ = [
     "compute_screen_for_single_poly",
