@@ -380,6 +380,8 @@ if __name__ == "__main__":
                             callback=generate_output,
                         )
 
+    # initial load
+    update_dynamic_texture(None, "", None)
     dpg.setup_dearpygui()
     dpg.show_viewport()
     dpg.set_primary_window(Tags.primary_window, True)
