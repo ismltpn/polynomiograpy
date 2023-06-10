@@ -17,6 +17,9 @@ class Tags:
     generate_output_modal = "GenerateOutputModal"
     generate_output_modal_text = "GenerateOutputModalText"
     generate_output_modal_button = "GenerateOutputModalButton"
+    is_r_channel_active = "IsRChannelActive"
+    is_g_channel_active = "IsGChannelActive"
+    is_b_channel_active = "IsBChannelActive"
     # Values
     max_imag_value = "MaxImagValue"
     min_imag_value = "MinImagValue"
@@ -24,8 +27,12 @@ class Tags:
     min_real_value = "MinRealValue"
     method_value = "MethodValue"
     color_value = "ColorValue"
-    delta_value = "DeltaValue"
-    max_iter_value = "MaxIterValue"
+    delta_r_value = "DeltaRValue"
+    max_iter_r_value = "MaxIterRValue"
+    delta_g_value = "DeltaGValue"
+    max_iter_g_value = "MaxIterGValue"
+    delta_b_value = "DeltaBValue"
+    max_iter_b_value = "MaxIterBValue"
     width_value = "WidthValue"
     height_value = "HeightValue"
     filename_value = "FilenameValue"
@@ -53,7 +60,7 @@ if __name__ == "__main__":
 
     # raw_data.resize((200, 200, 4))
     preview_screen = np.zeros((100, 100, 3), np.uint8)
-    preview_screen_buffer = np.zeros((100, 100, 3), np.int64)
+    preview_screen_buffer = np.zeros((100, 100, 3), np.complex128)
 
     def update_dynamic_texture(sender, app_data: str, user_data: Optional[list[int]]):
         try:
@@ -65,44 +72,65 @@ if __name__ == "__main__":
             min_imag = float(dpg.get_value(Tags.min_imag_value))
             max_real = float(dpg.get_value(Tags.max_real_value))
             min_real = float(dpg.get_value(Tags.min_real_value))
-            delta = float(dpg.get_value(Tags.delta_value))
-            max_iter = int(dpg.get_value(Tags.max_iter_value))
             width = 100
             height = 100
             scale_x = (max_real - min_real) / width
             scale_y = (max_imag - min_imag) / height
             shift_x = (max_real + min_real) / 2
             shift_y = (max_imag + min_imag) / 2
+            # channels = {
+            #     "red": 0,
+            #     "green": 1,
+            #     "blue": 2,
+            # }
+            # channel = channels[dpg.get_value(Tags.color_value)]
             preview_screen_buffer.fill(0)
-            channels = {
-                "red": 0,
-                "green": 1,
-                "blue": 2,
-            }
-            channel = channels[dpg.get_value(Tags.color_value)]
-            polynomiograpy.compute_screen_for_single_poly(
-                dpg.get_value(Tags.method_value),
-                polynomiograpy.Polynomial(coeffs=coefs),
-                delta=delta,
-                width=width,
-                height=height,
-                screen=preview_screen,
-                screen_buffer=preview_screen_buffer,
-                max_value=max_iter,
-                scale_x=scale_x,
-                scale_y=scale_y,
-                shift_x=shift_x,
-                shift_y=shift_y,
-                channel=channel,
-            )
+            active = [
+                dpg.get_value(Tags.is_r_channel_active),
+                dpg.get_value(Tags.is_g_channel_active),
+                dpg.get_value(Tags.is_b_channel_active),
+            ]
+            deltas = [
+                float(dpg.get_value(Tags.delta_r_value)),
+                float(dpg.get_value(Tags.delta_g_value)),
+                float(dpg.get_value(Tags.delta_b_value)),
+            ]
+            max_iters = [
+                int(dpg.get_value(Tags.max_iter_r_value)),
+                int(dpg.get_value(Tags.max_iter_g_value)),
+                int(dpg.get_value(Tags.max_iter_b_value)),
+            ]
+            for channel in [0, 1, 2]:
+                if active[channel]:
+                    polynomiograpy.compute_screen_for_single_poly(
+                        dpg.get_value(Tags.method_value),
+                        polynomiograpy.Polynomial(coeffs=coefs),
+                        delta=deltas[channel],
+                        width=width,
+                        height=height,
+                        screen=preview_screen,
+                        screen_buffer=preview_screen_buffer,
+                        max_value=max_iters[channel],
+                        scale_x=scale_x,
+                        scale_y=scale_y,
+                        shift_x=shift_x,
+                        shift_y=shift_y,
+                        channel=channel,
+                    )
             raw_data[:, :, :3] = np.true_divide(preview_screen, 255.0)
             dpg.set_value(Tags.error_field, "")
         except ValueError as e:
             raw_data.fill(1)
             dpg.set_value(Tags.error_field, str(e))
+            import traceback
+
+            traceback.print_exc()
         except Exception as e:
             raw_data.fill(1)
             dpg.set_value(Tags.error_field, str(e))
+            import traceback
+
+            traceback.print_exc()
 
     def generate_output(
         sender,
@@ -119,8 +147,8 @@ if __name__ == "__main__":
             min_imag = float(dpg.get_value(Tags.min_imag_value))
             max_real = float(dpg.get_value(Tags.max_real_value))
             min_real = float(dpg.get_value(Tags.min_real_value))
-            delta = float(dpg.get_value(Tags.delta_value))
-            max_iter = int(dpg.get_value(Tags.max_iter_value))
+            # delta = float(dpg.get_value(Tags.delta_value))
+            # max_iter = int(dpg.get_value(Tags.max_iter_value))
             width = int(dpg.get_value(Tags.width_value))
             height = int(dpg.get_value(Tags.height_value))
             scale_x = (max_real - min_real) / width
@@ -134,23 +162,40 @@ if __name__ == "__main__":
             }
             channel = channels[dpg.get_value(Tags.color_value)]
             output_screen = np.zeros((height, width, 3), np.uint8)
-            output_screen_buffer = np.zeros((height, width, 3), np.int64)
+            output_screen_buffer = np.zeros((height, width, 3), np.complex128)
             filename = dpg.get_value(Tags.filename_value)
-            polynomiograpy.compute_screen_for_single_poly(
-                dpg.get_value(Tags.method_value),
-                polynomiograpy.Polynomial(coeffs=coefs),
-                delta=delta,
-                width=width,
-                height=height,
-                screen=output_screen,
-                screen_buffer=output_screen_buffer,
-                max_value=max_iter,
-                scale_x=scale_x,
-                scale_y=scale_y,
-                shift_x=shift_x,
-                shift_y=shift_y,
-                channel=channel,
-            )
+            active = [
+                dpg.get_value(Tags.is_r_channel_active),
+                dpg.get_value(Tags.is_g_channel_active),
+                dpg.get_value(Tags.is_b_channel_active),
+            ]
+            deltas = [
+                float(dpg.get_value(Tags.delta_r_value)),
+                float(dpg.get_value(Tags.delta_g_value)),
+                float(dpg.get_value(Tags.delta_b_value)),
+            ]
+            max_iters = [
+                int(dpg.get_value(Tags.max_iter_r_value)),
+                int(dpg.get_value(Tags.max_iter_g_value)),
+                int(dpg.get_value(Tags.max_iter_b_value)),
+            ]
+            for channel in [0, 1, 2]:
+                if active[channel]:
+                    polynomiograpy.compute_screen_for_single_poly(
+                        dpg.get_value(Tags.method_value),
+                        polynomiograpy.Polynomial(coeffs=coefs),
+                        delta=deltas[channel],
+                        width=width,
+                        height=height,
+                        screen=output_screen,
+                        screen_buffer=output_screen_buffer,
+                        max_value=max_iters[channel],
+                        scale_x=scale_x,
+                        scale_y=scale_y,
+                        shift_x=shift_x,
+                        shift_y=shift_y,
+                        channel=channel,
+                    )
             im = Image.fromarray(output_screen, mode="RGB")
             im.save(filename, format="PNG")
             dpg.set_value(Tags.generate_output_modal_text, f"Done. Saved to {filename}")
@@ -179,7 +224,7 @@ if __name__ == "__main__":
 
     with dpg.value_registry():
         dpg.add_bool_value(default_value=True, tag=Tags.is_polynomial_valid)
-        dpg.add_string_value(default_value="1 0 1", tag=Tags.polynomial_raw_str)
+        dpg.add_string_value(default_value="1 0 1 1", tag=Tags.polynomial_raw_str)
         dpg.add_string_value(default_value="3", tag=Tags.max_imag_value)
         dpg.add_string_value(default_value="-3", tag=Tags.min_imag_value)
         dpg.add_string_value(default_value="3", tag=Tags.max_real_value)
@@ -188,8 +233,15 @@ if __name__ == "__main__":
             default_value="inverse_interpolation", tag=Tags.method_value
         )
         dpg.add_string_value(default_value="red", tag=Tags.color_value)
-        dpg.add_string_value(default_value="0.1", tag=Tags.delta_value)
-        dpg.add_string_value(default_value="16", tag=Tags.max_iter_value)
+        dpg.add_bool_value(default_value=True, tag=Tags.is_r_channel_active)
+        dpg.add_string_value(default_value="0.1", tag=Tags.delta_r_value)
+        dpg.add_string_value(default_value="16", tag=Tags.max_iter_r_value)
+        dpg.add_bool_value(default_value=False, tag=Tags.is_g_channel_active)
+        dpg.add_string_value(default_value="0.05", tag=Tags.delta_g_value)
+        dpg.add_string_value(default_value="16", tag=Tags.max_iter_g_value)
+        dpg.add_bool_value(default_value=True, tag=Tags.is_b_channel_active)
+        dpg.add_string_value(default_value="0.1", tag=Tags.delta_b_value)
+        dpg.add_string_value(default_value="8", tag=Tags.max_iter_b_value)
         dpg.add_string_value(default_value="1000", tag=Tags.width_value)
         dpg.add_string_value(default_value="1000", tag=Tags.height_value)
         dpg.add_string_value(default_value="out.png", tag=Tags.filename_value)
@@ -267,7 +319,7 @@ if __name__ == "__main__":
                                         callback=polynomial_text_field_callback,
                                     )
                                     dpg.add_text(
-                                        "1.0 + 0.0·x + 1.0·x²",
+                                        "1.0 + 0.0·x + 1.0·x² + 1.0·x³",
                                         tag=Tags.polynomial_preview,
                                     )
                             with dpg.table_row():
@@ -278,27 +330,59 @@ if __name__ == "__main__":
                                         source=Tags.method_value,
                                         callback=update_dynamic_texture,
                                     )
-                                    dpg.add_text("Color:")
-                                    dpg.add_combo(
-                                        items=["red", "green", "blue"],
-                                        source=Tags.color_value,
-                                        callback=update_dynamic_texture,
-                                    )
                                     with dpg.table(
                                         header_row=False,
                                         # resizable=True,
                                     ):
                                         dpg.add_table_column(width_stretch=True)
                                         dpg.add_table_column(width_stretch=True)
+                                        dpg.add_table_column()
                                         with dpg.table_row():
+                                            dpg.add_checkbox(
+                                                label="R",
+                                                source=Tags.is_r_channel_active,
+                                                callback=update_dynamic_texture,
+                                            )
                                             dpg.add_input_text(
                                                 label="Delta",
-                                                source=Tags.delta_value,
+                                                source=Tags.delta_r_value,
                                                 callback=update_dynamic_texture,
                                             )
                                             dpg.add_input_text(
                                                 label="Max Iter",
-                                                source=Tags.max_iter_value,
+                                                source=Tags.max_iter_r_value,
+                                                callback=update_dynamic_texture,
+                                            )
+                                        with dpg.table_row():
+                                            dpg.add_checkbox(
+                                                label="G",
+                                                source=Tags.is_g_channel_active,
+                                                callback=update_dynamic_texture,
+                                            )
+                                            dpg.add_input_text(
+                                                label="Delta",
+                                                source=Tags.delta_g_value,
+                                                callback=update_dynamic_texture,
+                                            )
+                                            dpg.add_input_text(
+                                                label="Max Iter",
+                                                source=Tags.max_iter_g_value,
+                                                callback=update_dynamic_texture,
+                                            )
+                                        with dpg.table_row():
+                                            dpg.add_checkbox(
+                                                label="B",
+                                                source=Tags.is_b_channel_active,
+                                                callback=update_dynamic_texture,
+                                            )
+                                            dpg.add_input_text(
+                                                label="Delta",
+                                                source=Tags.delta_b_value,
+                                                callback=update_dynamic_texture,
+                                            )
+                                            dpg.add_input_text(
+                                                label="Max Iter",
+                                                source=Tags.max_iter_b_value,
                                                 callback=update_dynamic_texture,
                                             )
                         with dpg.table(
