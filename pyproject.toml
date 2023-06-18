@@ -28,6 +28,7 @@ flake8 = "^6.0.0"
 
 [tool.poetry.scripts]
 polynomiograpy_cli = 'polynomiograpy.cli:run'
+polynomiograpy_gui = 'gui:run'
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.1"

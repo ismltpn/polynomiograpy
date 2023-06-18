@@ -38,7 +38,7 @@ class Tags:
     filename_value = "FilenameValue"
 
 
-if __name__ == "__main__":
+def run():
     dpg.create_context()
     dpg.create_viewport(
         title="PolynomiograPy",
@@ -471,3 +471,7 @@ if __name__ == "__main__":
     dpg.set_primary_window(Tags.primary_window, True)
     dpg.start_dearpygui()
     dpg.destroy_context()
+
+
+if __name__ == "__main__":
+    run()
