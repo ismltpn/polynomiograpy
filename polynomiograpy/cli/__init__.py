@@ -181,7 +181,7 @@ def run_iter():
 
     print(f"Generating the output for polynomial {poly} using {method} method")
     screen = np.zeros([height, width, 3], dtype=np.uint8)
-    screen_buffer = np.zeros([height, width, 3], dtype=np.int64)
+    screen_buffer = np.zeros([height, width, 3], dtype=np.complex128)
 
     scale_x = (max_real - min_real) / width
     scale_y = (max_imag - min_imag) / height
