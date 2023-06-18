@@ -1,0 +1,14 @@
+PolynomiograPy.roots.helpers
+============================
+
+.. automodule:: polynomiograpy.roots.helpers
+   :members:
+   :undoc-members:
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      compute_screen_for_roots
+      compute_screen_for_roots_multi_color
+
+   .. rubric:: Details

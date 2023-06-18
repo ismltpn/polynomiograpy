@@ -1,0 +1,6 @@
+﻿polynomiograpy.compute\_screen\_for\_finite\_field\_poly\_multi\_color
+======================================================================
+
+.. currentmodule:: polynomiograpy
+
+.. autofunction:: compute_screen_for_finite_field_poly_multi_color

@@ -1,0 +1,6 @@
+﻿polynomiograpy.compute\_screen\_for\_single\_poly
+=================================================
+
+.. currentmodule:: polynomiograpy
+
+.. autofunction:: compute_screen_for_single_poly

@@ -1,0 +1,14 @@
+﻿PolynomiograPy.common
+=====================
+
+.. automodule:: polynomiograpy.common
+   :members:
+   :undoc-members:
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      FiniteField
+      Polynomial
+
+   .. rubric:: Details

@@ -1,0 +1,25 @@
+﻿polynomiograpy.Polynomial
+=========================
+
+.. currentmodule:: polynomiograpy
+
+.. autoclass:: Polynomial
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Polynomial.__init__
+      ~Polynomial.deriv
+      ~Polynomial.eval
+      ~Polynomial.eval_deriv
+   
+   
+
+   
+   
+   

@@ -1,0 +1,23 @@
+﻿polynomiograpy.FiniteField
+==========================
+
+.. currentmodule:: polynomiograpy
+
+.. autoclass:: FiniteField
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FiniteField.__init__
+      ~FiniteField.generate_polynomials
+   
+   
+
+   
+   
+   

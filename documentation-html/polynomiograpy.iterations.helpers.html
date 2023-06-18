@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PolynomiograPy.iterations.helpers &#8212; PolynomiograPy 0.5.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PolynomiograPy.roots" href="polynomiograpy.roots.html" />
+    <link rel="prev" title="PolynomiograPy.iterations" href="polynomiograpy.iterations.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PolynomiograPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="polynomiograpy.html">PolynomiograPy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="polynomiograpy.cli.html">PolynomiograPy.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polynomiograpy.common.html">PolynomiograPy.common</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="polynomiograpy.iterations.html">PolynomiograPy.iterations</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PolynomiograPy.iterations.helpers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#polynomiograpy.iterations.helpers.compute_np_screen"><code class="docutils literal notranslate"><span class="pre">compute_np_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polynomiograpy.iterations.helpers.compute_np_screen_multithread"><code class="docutils literal notranslate"><span class="pre">compute_np_screen_multithread()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polynomiograpy.iterations.helpers.compute_np_screen_vectorized"><code class="docutils literal notranslate"><span class="pre">compute_np_screen_vectorized()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="polynomiograpy.iterations.html#polynomiograpy.iterations.compute_screen_for_single_poly"><code class="docutils literal notranslate"><span class="pre">compute_screen_for_single_poly()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="polynomiograpy.roots.html">PolynomiograPy.roots</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="polynomiograpy.html">PolynomiograPy</a><ul>
+  <li><a href="polynomiograpy.iterations.html">PolynomiograPy.iterations</a><ul>
+      <li>Previous: <a href="polynomiograpy.iterations.html" title="previous chapter">PolynomiograPy.iterations</a></li>
+      <li>Next: <a href="polynomiograpy.roots.html" title="next chapter">PolynomiograPy.roots</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-polynomiograpy.iterations.helpers">
+<span id="polynomiograpy-iterations-helpers"></span><h1>PolynomiograPy.iterations.helpers<a class="headerlink" href="#module-polynomiograpy.iterations.helpers" title="Permalink to this heading">¶</a></h1>
+<p class="rubric">Summary</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#polynomiograpy.iterations.helpers.compute_np_screen" title="polynomiograpy.iterations.helpers.compute_np_screen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_np_screen</span></code></a>(func, width, height, ...)</p></td>
+<td><p>Computes a screen representation of a function over a complex plane.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#polynomiograpy.iterations.helpers.compute_np_screen_multithread" title="polynomiograpy.iterations.helpers.compute_np_screen_multithread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_np_screen_multithread</span></code></a>(func, width, ...)</p></td>
+<td><p>Computes a screen representation of a function over a complex plane using multiple threads.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#polynomiograpy.iterations.helpers.compute_np_screen_vectorized" title="polynomiograpy.iterations.helpers.compute_np_screen_vectorized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_np_screen_vectorized</span></code></a>(func, width, ...)</p></td>
+<td><p>Computes a screen representation of a function over a complex plane.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Details</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="polynomiograpy.iterations.helpers.compute_np_screen">
+<span class="sig-prename descclassname"><span class="pre">polynomiograpy.iterations.helpers.</span></span><span class="sig-name descname"><span class="pre">compute_np_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polynomiograpy.iterations.helpers.compute_np_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a screen representation of a function over a complex plane.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>func (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable[[complex],</span> <span class="pre">int]</span></code>):</dt><dd><p>A function that maps complex numbers to integers, defining the
+behavior of the screen representation. Usually it is one of from iterative
+root finding methods.</p>
+</dd>
+<dt>width (int):</dt><dd><p>Width of the screen.</p>
+</dd>
+<dt>height (int):</dt><dd><p>Height of the screen.</p>
+</dd>
+<dt>screen (<code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>):</dt><dd><p>Screen array to store the resulting representation.</p>
+</dd>
+<dt>screen_buffer (<code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>):</dt><dd><p>Temporary buffer array for intermediate calculations.</p>
+</dd>
+<dt>scale_x (float, optional):</dt><dd><p>Scaling factor for the x-axis. Defaults to 1.</p>
+</dd>
+<dt>scale_y (float, optional):</dt><dd><p>Scaling factor for the y-axis. Defaults to 1.</p>
+</dd>
+<dt>shift_x (float, optional):</dt><dd><p>Shift value for the x-axis. Defaults to 0.</p>
+</dd>
+<dt>shift_y (float, optional):</dt><dd><p>Shift value for the y-axis. Defaults to 0.</p>
+</dd>
+<dt>max_value (int, optional):</dt><dd><p>Maximum value used for color mapping. Defaults to 16.</p>
+</dd>
+<dt>reverse_color (bool, optional):</dt><dd><p>Flag to reverse the color mapping. Defaults to False.</p>
+</dd>
+<dt>channel (int, optional):</dt><dd><p>Color channel for color mapping. Defaults to 0.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>:</dt><dd><p>The resulting screen representation based on the provided function
+over the complex plane.</p>
+</dd>
+</dl>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The screen representation is generated by applying the <cite>func</cite> to each
+point on the complex plane defined by the width and height of the
+screen.</p></li>
+<li><p>The resulting integer values from the <cite>func</cite> are mapped to colors on
+the screen based on the provided color mapping parameters.</p></li>
+<li><p>The input screen and screen_buffer arrays are modified in-place.</p></li>
+<li><p>The function assumes that the input screen and screen_buffer arrays
+have the correct shape and dtype.</p></li>
+<li><p>The color values are scaled to the range [0, 255].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polynomiograpy.iterations.helpers.compute_np_screen_multithread">
+<span class="sig-prename descclassname"><span class="pre">polynomiograpy.iterations.helpers.</span></span><span class="sig-name descname"><span class="pre">compute_np_screen_multithread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">complex</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polynomiograpy.iterations.helpers.compute_np_screen_multithread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a screen representation of a function over a complex plane using
+multiple threads.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>func (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable[[complex],</span> <span class="pre">int]</span></code>):</dt><dd><p>A function that maps complex numbers to integers, defining the
+behavior of the screen representation.</p>
+</dd>
+<dt>width (int):</dt><dd><p>Width of the screen.</p>
+</dd>
+<dt>height (int):</dt><dd><p>Height of the screen.</p>
+</dd>
+<dt>screen (<code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>):</dt><dd><p>Screen array to store the resulting representation.</p>
+</dd>
+<dt>screen_buffer (<code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>):</dt><dd><p>Temporary buffer array for intermediate calculations.</p>
+</dd>
+<dt>scale_x (float, optional):</dt><dd><p>Scaling factor for the x-axis. Defaults to 1.</p>
+</dd>
+<dt>scale_y (float, optional):</dt><dd><p>Scaling factor for the y-axis. Defaults to 1.</p>
+</dd>
+<dt>shift_x (float, optional):</dt><dd><p>Shift value for the x-axis. Defaults to 0.</p>
+</dd>
+<dt>shift_y (float, optional):</dt><dd><p>Shift value for the y-axis. Defaults to 0.</p>
+</dd>
+<dt>max_value (int, optional):</dt><dd><p>Maximum value used for color mapping. Defaults to 16.</p>
+</dd>
+<dt>reverse_color (bool, optional):</dt><dd><p>Flag to reverse the color mapping. Defaults to False.</p>
+</dd>
+<dt>channel (int, optional):</dt><dd><p>Color channel for color mapping. Defaults to 0.</p>
+</dd>
+<dt>thread_count (int, optional):</dt><dd><p>Number of threads to use for parallel computation. Defaults to 16.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>:</dt><dd><p>The resulting screen representation based on the provided function
+over the complex plane.</p>
+</dd>
+</dl>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The screen representation is generated by applying the <cite>func</cite> to each
+point on the complex plane defined by the width and height of the
+screen.</p></li>
+<li><p>The resulting integer values from the <cite>func</cite> are mapped to colors on
+the screen based on the provided color mapping parameters.</p></li>
+<li><p>The input screen and screen_buffer arrays are modified in-place.</p></li>
+<li><p>The function assumes that the input screen and screen_buffer arrays
+have the correct shape and dtype.</p></li>
+<li><p>The color values are scaled to the range [0, 255].</p></li>
+<li><p>The computation is performed using multiple threads to speed up the
+process. The <cite>thread_count</cite> parameter controls the number of threads
+to use.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="polynomiograpy.iterations.helpers.compute_np_screen_vectorized">
+<span class="sig-prename descclassname"><span class="pre">polynomiograpy.iterations.helpers.</span></span><span class="sig-name descname"><span class="pre">compute_np_screen_vectorized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#polynomiograpy.iterations.helpers.compute_np_screen_vectorized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a screen representation of a function over a complex plane.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>func (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable[[np.ndarray],</span> <span class="pre">int]</span></code>):</dt><dd><p>A function that maps an ndarray of complex numbers to an ndarray
+of integers, defining the behavior of the screen representation.</p>
+</dd>
+<dt>width (int):</dt><dd><p>Width of the screen.</p>
+</dd>
+<dt>height (int):</dt><dd><p>Height of the screen.</p>
+</dd>
+<dt>screen (<code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>):</dt><dd><p>Screen array to store the resulting representation.</p>
+</dd>
+<dt>screen_buffer (<code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>):</dt><dd><p>Temporary buffer array for intermediate calculations.</p>
+</dd>
+<dt>scale_x (float, optional):</dt><dd><p>Scaling factor for the x-axis. Defaults to 1.</p>
+</dd>
+<dt>scale_y (float, optional):</dt><dd><p>Scaling factor for the y-axis. Defaults to 1.</p>
+</dd>
+<dt>shift_x (float, optional):</dt><dd><p>Shift value for the x-axis. Defaults to 0.</p>
+</dd>
+<dt>shift_y (float, optional):</dt><dd><p>Shift value for the y-axis. Defaults to 0.</p>
+</dd>
+<dt>max_value (int, optional):</dt><dd><p>Maximum value used for color mapping. Defaults to 16.</p>
+</dd>
+<dt>reverse_color (bool, optional):</dt><dd><p>Flag to reverse the color mapping. Defaults to False.</p>
+</dd>
+<dt>channel (int, optional):</dt><dd><p>Color channel for color mapping. Defaults to 0.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>:</dt><dd><p>The resulting vectorized screen representation based on the
+provided function over the complex plane.</p>
+</dd>
+</dl>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The <cite>func</cite> argument should be a callable that takes an ndarray of
+complex numbers as input and returns an ndarray of integers.</p></li>
+<li><p>The screen representation is generated by applying the <cite>func</cite> to the screen</p></li>
+<li><p>The resulting integer values from the <cite>func</cite> are mapped to colors on
+the screen based on the provided color mapping parameters.</p></li>
+<li><p>The input screen and screen_buffer arrays are modified in-place.</p></li>
+<li><p>The function assumes that the input screen and screen_buffer arrays
+have the correct shape and dtype.</p></li>
+<li><p>The computation is vectorized for faster execution using NumPy
+operations.</p></li>
+<li><p>The resulting screen representation is stored in the <cite>screen</cite> array.</p></li>
+<li><p>The color values are scaled to the range [0, 255].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2023, İsmail Tapan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/polynomiograpy.iterations.helpers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

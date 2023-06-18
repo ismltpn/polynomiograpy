@@ -1,0 +1,23 @@
+﻿polynomiograpy
+==============
+
+.. automodule:: polynomiograpy
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

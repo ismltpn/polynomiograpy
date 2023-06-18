@@ -1,0 +1,15 @@
+﻿PolynomiograPy.iterations.helpers
+=================================
+
+.. automodule:: polynomiograpy.iterations.helpers
+   :members:
+   :undoc-members:
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      compute_np_screen
+      compute_np_screen_multithread
+      compute_np_screen_vectorized
+
+   .. rubric:: Details

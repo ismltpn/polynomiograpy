@@ -1,0 +1,18 @@
+﻿PolynomiograPy.iterations
+=========================
+  
+.. toctree::
+   :caption: Contents:
+
+   polynomiograpy.iterations.helpers
+   
+.. automodule:: polynomiograpy.iterations
+   :members:
+   :undoc-members:
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      compute_screen_for_single_poly
+
+   .. rubric:: Details

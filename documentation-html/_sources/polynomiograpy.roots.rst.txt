@@ -1,0 +1,19 @@
+﻿PolynomiograPy.roots
+====================
+
+.. toctree::
+   :caption: Contents:
+
+   polynomiograpy.roots.helpers
+
+.. automodule:: polynomiograpy.roots
+   :members:
+   :undoc-members:
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      compute_screen_for_finite_field_poly
+      compute_screen_for_finite_field_poly_multi_color
+   
+   .. rubric:: Details

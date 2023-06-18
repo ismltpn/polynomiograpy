@@ -1,0 +1,22 @@
+﻿PolynomiograPy
+==============
+
+.. toctree::
+   :caption: Contents:
+   :maxdepth: 1
+
+   polynomiograpy.cli
+   polynomiograpy.common
+   polynomiograpy.iterations
+   polynomiograpy.roots
+
+.. automodule:: polynomiograpy   
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      FiniteField
+      Polynomial
+      compute_screen_for_finite_field_poly
+      compute_screen_for_finite_field_poly_multi_color
+      compute_screen_for_single_poly

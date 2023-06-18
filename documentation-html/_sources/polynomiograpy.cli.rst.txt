@@ -1,0 +1,15 @@
+﻿PolynomiograPy.cli
+==================
+
+.. automodule:: polynomiograpy.cli
+   :members:
+   :undoc-members:
+
+   .. rubric:: Summary
+
+   .. autosummary::
+      run
+      run_iter
+      run_root
+
+   .. rubric:: Details

@@ -29,6 +29,10 @@ flake8 = "^6.0.0"
 [tool.poetry.scripts]
 polynomiograpy_cli = 'polynomiograpy.cli:run'
 
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.0.1"
+rst2pdf = "^0.100"
+
 [tool.isort]
 profile = "black"
 
