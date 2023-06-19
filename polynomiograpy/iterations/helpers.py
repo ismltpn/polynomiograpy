@@ -261,9 +261,9 @@ def compute_np_screen_vectorized(
             val = complex(x, y)
             screen_buffer[j, i, channel] = val
     iter_counts = func(screen_buffer[:, :, channel])
-    screen_buffer[:, :, channel] = (
-        max_value - reverse_color if reverse_color else iter_counts
-    )
+    screen_buffer[:, :, channel] = iter_counts
+    if reverse_color:
+        screen_buffer[:, :, channel] = max_value - screen_buffer[:, :, channel]
     screen[:, :, 0] = (screen_buffer[:, :, 0] / max_value * 255).real
     screen[:, :, 1] = (screen_buffer[:, :, 1] / max_value * 255).real
     screen[:, :, 2] = (screen_buffer[:, :, 2] / max_value * 255).real

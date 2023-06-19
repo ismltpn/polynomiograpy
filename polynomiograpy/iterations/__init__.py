@@ -104,7 +104,18 @@ def compute_screen_for_single_poly(
     """
     assert method in available_methods, "Unknown method"
     func: Callable[[complex], int]
-    if method == "newton":
+    if method == "old_newton":
+
+        def func(val: complex) -> int:
+            new_val, iter_count = methods.newton_method(
+                poly,
+                val,
+                delta,
+                max_iter_count=max_value,
+            )
+            return iter_count
+
+    elif method == "newton":
 
         def func(val: complex) -> int:
             iter_count = methods.newton_method_numpy(
