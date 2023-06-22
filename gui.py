@@ -20,6 +20,10 @@ class Tags:
     is_r_channel_active = "IsRChannelActive"
     is_g_channel_active = "IsGChannelActive"
     is_b_channel_active = "IsBChannelActive"
+
+    is_r_channel_reversed = "IsRChannelReversed"
+    is_g_channel_reversed = "IsGChannelReversed"
+    is_b_channel_reversed = "IsBChannelReversed"
     # Values
     max_imag_value = "MaxImagValue"
     min_imag_value = "MinImagValue"
@@ -100,6 +104,11 @@ def run():
                 int(dpg.get_value(Tags.max_iter_g_value)),
                 int(dpg.get_value(Tags.max_iter_b_value)),
             ]
+            reversed = [
+                dpg.get_value(Tags.is_r_channel_reversed),
+                dpg.get_value(Tags.is_g_channel_reversed),
+                dpg.get_value(Tags.is_b_channel_reversed),
+            ]
             for channel in [0, 1, 2]:
                 if active[channel]:
                     polynomiograpy.compute_screen_for_single_poly(
@@ -116,6 +125,7 @@ def run():
                         shift_x=shift_x,
                         shift_y=shift_y,
                         channel=channel,
+                        reverse_color=reversed[channel],
                     )
             raw_data[:, :, :3] = np.true_divide(preview_screen, 255.0)
             dpg.set_value(Tags.error_field, "")
@@ -179,6 +189,11 @@ def run():
                 int(dpg.get_value(Tags.max_iter_g_value)),
                 int(dpg.get_value(Tags.max_iter_b_value)),
             ]
+            reversed = [
+                dpg.get_value(Tags.is_r_channel_reversed),
+                dpg.get_value(Tags.is_g_channel_reversed),
+                dpg.get_value(Tags.is_b_channel_reversed),
+            ]
             for channel in [0, 1, 2]:
                 if active[channel]:
                     polynomiograpy.compute_screen_for_single_poly(
@@ -195,6 +210,7 @@ def run():
                         shift_x=shift_x,
                         shift_y=shift_y,
                         channel=channel,
+                        reverse_color=reversed[channel],
                     )
             im = Image.fromarray(output_screen, mode="RGB")
             im.save(filename, format="PNG")
@@ -245,6 +261,9 @@ def run():
         dpg.add_string_value(default_value="1000", tag=Tags.width_value)
         dpg.add_string_value(default_value="1000", tag=Tags.height_value)
         dpg.add_string_value(default_value="out.png", tag=Tags.filename_value)
+        dpg.add_bool_value(default_value=False, tag=Tags.is_r_channel_reversed)
+        dpg.add_bool_value(default_value=False, tag=Tags.is_g_channel_reversed)
+        dpg.add_bool_value(default_value=False, tag=Tags.is_b_channel_reversed)
 
     with dpg.texture_registry(show=False):
         dpg.add_raw_texture(
@@ -334,13 +353,18 @@ def run():
                                         header_row=False,
                                         # resizable=True,
                                     ):
+                                        dpg.add_table_column(width=50, width_fixed=True)
+                                        dpg.add_table_column(width=50, width_fixed=True)
                                         dpg.add_table_column(width_stretch=True)
                                         dpg.add_table_column(width_stretch=True)
-                                        dpg.add_table_column()
                                         with dpg.table_row():
                                             dpg.add_checkbox(
                                                 label="R",
                                                 source=Tags.is_r_channel_active,
+                                                callback=update_dynamic_texture,
+                                            )
+                                            dpg.add_checkbox(
+                                                source=Tags.is_r_channel_reversed,
                                                 callback=update_dynamic_texture,
                                             )
                                             dpg.add_input_text(
@@ -359,6 +383,10 @@ def run():
                                                 source=Tags.is_g_channel_active,
                                                 callback=update_dynamic_texture,
                                             )
+                                            dpg.add_checkbox(
+                                                source=Tags.is_g_channel_reversed,
+                                                callback=update_dynamic_texture,
+                                            )
                                             dpg.add_input_text(
                                                 label="Delta",
                                                 source=Tags.delta_g_value,
@@ -373,6 +401,10 @@ def run():
                                             dpg.add_checkbox(
                                                 label="B",
                                                 source=Tags.is_b_channel_active,
+                                                callback=update_dynamic_texture,
+                                            )
+                                            dpg.add_checkbox(
+                                                source=Tags.is_b_channel_reversed,
                                                 callback=update_dynamic_texture,
                                             )
                                             dpg.add_input_text(
